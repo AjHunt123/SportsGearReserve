@@ -12,7 +12,7 @@
         android:text="Cancel Reservation"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="#C62828" />
+        android:textColor="@color/badge_overdue_text" />
 
     <TextView
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:layout_marginTop="6dp"
         android:text="Please provide a mandatory reason for cancelling this reservation:"
         android:textSize="13sp"
-        android:textColor="#616161" />
+        android:textColor="@color/text_secondary" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

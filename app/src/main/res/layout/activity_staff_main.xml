@@ -6,16 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8F9FA">
+    android:background="@color/app_background">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#1E88E5"
+        android:background="@color/primary"
         app:title="SportsGear Reserve – Staff Portal"
-        app:titleTextColor="#FFFFFF"
-        app:subtitleTextColor="#E0E0E0"
+        app:titleTextColor="@color/text_on_primary"
+        app:subtitleTextColor="@color/text_on_primary_sub"
         app:menu="@menu/menu_main" />
 
     <FrameLayout
@@ -28,7 +28,9 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/surface"
+        app:itemIconTint="@color/primary"
+        app:itemTextColor="@color/primary"
         app:elevation="8dp"
         app:menu="@menu/menu_staff_nav" />
 

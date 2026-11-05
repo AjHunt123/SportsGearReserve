@@ -2,12 +2,13 @@ package com.example.sportsgearreserve.ui.student
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.example.sportsgearreserve.R
 import com.example.sportsgearreserve.data.SessionManager
 import com.example.sportsgearreserve.data.SportsRepository
 import com.example.sportsgearreserve.databinding.ActivityEquipmentDetailBinding
@@ -179,12 +180,12 @@ class EquipmentDetailActivity : AppCompatActivity() {
 
         if (available > 0) {
             binding.tvAvailabilityResult.text = "AVAILABLE: $available of ${eq.totalQuantity} units are free for this time window."
-            binding.tvAvailabilityResult.setBackgroundColor(Color.parseColor("#E8F5E9"))
-            binding.tvAvailabilityResult.setTextColor(Color.parseColor("#2E7D32"))
+            binding.tvAvailabilityResult.setBackgroundColor(ContextCompat.getColor(this, R.color.badge_active_bg))
+            binding.tvAvailabilityResult.setTextColor(ContextCompat.getColor(this, R.color.badge_active_text))
         } else {
             binding.tvAvailabilityResult.text = "UNAVAILABLE: All ${eq.totalQuantity} units are reserved/issued during this window."
-            binding.tvAvailabilityResult.setBackgroundColor(Color.parseColor("#FFEBEE"))
-            binding.tvAvailabilityResult.setTextColor(Color.parseColor("#C62828"))
+            binding.tvAvailabilityResult.setBackgroundColor(ContextCompat.getColor(this, R.color.badge_overdue_bg))
+            binding.tvAvailabilityResult.setTextColor(ContextCompat.getColor(this, R.color.badge_overdue_text))
         }
     }
 

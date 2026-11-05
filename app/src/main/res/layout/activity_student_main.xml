@@ -6,16 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8F9FA">
+    android:background="@color/app_background">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/primary_blue"
         app:title="SportsGear Reserve"
-        app:titleTextColor="#FFFFFF"
-        app:subtitleTextColor="#E0E0E0"
+        app:titleTextColor="@color/text_on_primary"
+        app:subtitleTextColor="@color/text_on_primary_sub"
         app:menu="@menu/menu_main" />
 
     <FrameLayout
@@ -28,7 +28,9 @@
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@color/surface"
+        app:itemIconTint="@color/primary_blue"
+        app:itemTextColor="@color/primary_blue"
         app:elevation="8dp"
         app:menu="@menu/menu_student_nav" />
 

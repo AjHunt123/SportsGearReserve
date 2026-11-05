@@ -26,13 +26,14 @@
                 android:text="Inventory Management"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#212121" />
+                android:textColor="@color/text_primary" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddEquipment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+ Add Item"
+                app:backgroundTint="@color/primary_blue"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -96,7 +97,7 @@
             android:padding="32dp"
             android:text="No equipment records found."
             android:textSize="14sp"
-            android:textColor="#9E9E9E"
+            android:textColor="@color/text_muted"
             android:visibility="gone"
             tools:visibility="visible" />
 

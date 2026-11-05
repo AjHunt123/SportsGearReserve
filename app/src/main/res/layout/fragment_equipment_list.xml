@@ -58,7 +58,7 @@
         android:text="Select equipment to view availability &amp; reserve:"
         android:textSize="13sp"
         android:textStyle="bold"
-        android:textColor="#616161" />
+        android:textColor="@color/text_secondary" />
 
     <!-- RecyclerView for Equipment List -->
     <androidx.recyclerview.widget.RecyclerView
@@ -79,7 +79,7 @@
         android:padding="32dp"
         android:text="No equipment matches your search or filter."
         android:textSize="14sp"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/text_muted"
         android:visibility="gone"
         tools:visibility="visible" />
 

@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Brand Primary Colors -->
+    <color name="primary">#0F172A</color>
+    <color name="primary_variant">#1E293B</color>
+    <color name="primary_blue">#1E3A8A</color>
+    <color name="secondary">#0284C7</color>
+    <color name="accent">#F97316</color>
+
+    <!-- UI Background & Card Colors -->
+    <color name="app_background">#F1F5F9</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="card_stroke">#E2E8F0</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_muted">#94A3B8</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_on_primary_sub">#CBD5E1</color>
+
+    <!-- Status Badge Colors -->
+    <color name="badge_active_bg">#DCFCE7</color>
+    <color name="badge_active_text">#15803D</color>
+
+    <color name="badge_reserved_bg">#E0F2FE</color>
+    <color name="badge_reserved_text">#0369A1</color>
+
+    <color name="badge_issued_bg">#FEF3C7</color>
+    <color name="badge_issued_text">#B45309</color>
+
+    <color name="badge_overdue_bg">#FFE4E6</color>
+    <color name="badge_overdue_text">#BE123C</color>
+    <color name="badge_overdue_border">#F43F5E</color>
+
+    <color name="badge_inactive_bg">#F1F5F9</color>
+    <color name="badge_inactive_text">#64748B</color>
+
+    <!-- Utility Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

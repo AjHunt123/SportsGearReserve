@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F8F9FA">
+    android:background="@color/app_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@android:drawable/ic_menu_revert"
             app:title="Equipment Details &amp; Reserve"
-            app:titleTextColor="#212121" />
+            app:titleTextColor="@color/text_primary" />
 
         <!-- Equipment Overview Card -->
         <com.google.android.material.card.MaterialCardView
@@ -28,7 +28,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/surface"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#212121"
+                    android:textColor="@color/text_primary"
                     tools:text="Basketball (Molten GG7X)" />
 
                 <TextView
@@ -51,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:textSize="14sp"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="@color/primary_blue"
                     tools:text="Category: Balls" />
 
                 <TextView
@@ -60,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:textSize="14sp"
-                    android:textColor="#424242"
+                    android:textColor="@color/text_secondary"
                     tools:text="Official size 7 indoor/outdoor synthetic leather basketball." />
 
                 <LinearLayout
@@ -76,7 +79,7 @@
                         android:layout_weight="1"
                         android:textSize="13sp"
                         android:textStyle="bold"
-                        android:textColor="#212121"
+                        android:textColor="@color/text_primary"
                         tools:text="Total Stock: 10 units" />
 
                     <TextView
@@ -84,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
-                        android:textColor="#757575"
+                        android:textColor="@color/text_muted"
                         tools:text="Max 2/student | Max 4h" />
 
                 </LinearLayout>
@@ -99,7 +102,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/surface"
+            app:strokeColor="@color/card_stroke"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,7 +119,7 @@
                     android:text="Select Reservation Schedule"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="#212121" />
+                    android:textColor="@color/text_primary" />
 
                 <!-- Date Picker Field -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -197,6 +203,8 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
                     android:text="Check Real-Time Availability"
+                    android:textColor="@color/primary_blue"
+                    app:strokeColor="@color/primary_blue"
                     android:textSize="14sp" />
 
                 <TextView
@@ -205,8 +213,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="12dp"
-                    android:background="#E8F5E9"
-                    android:textColor="#2E7D32"
+                    android:background="@color/badge_active_bg"
+                    android:textColor="@color/badge_active_text"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -225,6 +233,7 @@
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
             android:text="Submit Reservation"
+            app:backgroundTint="@color/accent"
             android:textSize="16sp"
             app:cornerRadius="12dp" />
 

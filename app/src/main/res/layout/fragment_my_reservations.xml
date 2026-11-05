@@ -73,7 +73,7 @@
         android:padding="32dp"
         android:text="No reservations found for the selected filter."
         android:textSize="14sp"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/text_muted"
         android:visibility="gone"
         tools:visibility="visible" />
 

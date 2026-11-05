@@ -1,10 +1,11 @@
 package com.example.sportsgearreserve.ui.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sportsgearreserve.R
 import com.example.sportsgearreserve.databinding.ItemReservationBinding
 import com.example.sportsgearreserve.models.Reservation
 import com.example.sportsgearreserve.models.ReservationStatus
@@ -46,34 +47,36 @@ class ReservationAdapter(
             val endStr = dateFormat.format(Date(item.endAt))
             tvTimeWindow.text = "Window: $startStr – $endStr"
 
+            val context = root.context
+
             // Status Badge Formatting & Colors
             if (item.isOverdue) {
                 tvStatusBadge.text = "OVERDUE"
-                tvStatusBadge.setBackgroundColor(Color.parseColor("#FFEBEE"))
-                tvStatusBadge.setTextColor(Color.parseColor("#C62828"))
-                cardReservation.strokeColor = Color.parseColor("#E53935")
+                tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_overdue_bg))
+                tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_overdue_text))
+                cardReservation.strokeColor = ContextCompat.getColor(context, R.color.badge_overdue_border)
             } else {
-                cardReservation.strokeColor = Color.parseColor("#E0E0E0")
+                cardReservation.strokeColor = ContextCompat.getColor(context, R.color.card_stroke)
                 when (item.status) {
                     ReservationStatus.RESERVED -> {
                         tvStatusBadge.text = "RESERVED"
-                        tvStatusBadge.setBackgroundColor(Color.parseColor("#E3F2FD"))
-                        tvStatusBadge.setTextColor(Color.parseColor("#1976D2"))
+                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_reserved_bg))
+                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_reserved_text))
                     }
                     ReservationStatus.ISSUED -> {
                         tvStatusBadge.text = "ISSUED"
-                        tvStatusBadge.setBackgroundColor(Color.parseColor("#FFF3E0"))
-                        tvStatusBadge.setTextColor(Color.parseColor("#E65100"))
+                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_issued_bg))
+                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_issued_text))
                     }
                     ReservationStatus.RETURNED -> {
                         tvStatusBadge.text = "RETURNED"
-                        tvStatusBadge.setBackgroundColor(Color.parseColor("#E8F5E9"))
-                        tvStatusBadge.setTextColor(Color.parseColor("#2E7D32"))
+                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_active_bg))
+                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_active_text))
                     }
                     ReservationStatus.CANCELLED -> {
                         tvStatusBadge.text = "CANCELLED"
-                        tvStatusBadge.setBackgroundColor(Color.parseColor("#F5F5F5"))
-                        tvStatusBadge.setTextColor(Color.parseColor("#757575"))
+                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_inactive_bg))
+                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_inactive_text))
                     }
                 }
             }
@@ -106,7 +109,7 @@ class ReservationAdapter(
                     btnReturn.setOnClickListener { onReturnClick?.invoke(item) }
                 }
             } else {
-                // Student mode: Allow student to cancel RESERVED before start time (BR-06)
+                // Student mode: Allow student to cancel RESERVED before start time
                 val now = System.currentTimeMillis()
                 if (item.status == ReservationStatus.RESERVED && item.startAt > now) {
                     layoutActions.visibility = View.VISIBLE

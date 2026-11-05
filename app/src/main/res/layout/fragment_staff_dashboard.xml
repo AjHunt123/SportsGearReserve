@@ -16,8 +16,8 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="8dp"
         app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="#FFEBEE"
-        app:strokeColor="#E53935"
+        app:cardBackgroundColor="@color/badge_overdue_bg"
+        app:strokeColor="@color/badge_overdue_border"
         app:strokeWidth="1dp"
         android:visibility="gone"
         tools:visibility="visible">
@@ -34,7 +34,7 @@
                 android:layout_height="24dp"
                 android:contentDescription="Alert Icon"
                 android:src="@android:drawable/ic_dialog_alert"
-                app:tint="#D32F2F" />
+                app:tint="@color/badge_overdue_text" />
 
             <TextView
                 android:id="@+id/tvOverdueAlertText"
@@ -44,7 +44,7 @@
                 android:layout_marginStart="8dp"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:textColor="#C62828"
+                android:textColor="@color/badge_overdue_text"
                 tools:text="1 item is currently OVERDUE for return!" />
 
         </LinearLayout>
@@ -78,7 +78,7 @@
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#C62828"
+                android:textColor="@color/badge_overdue_text"
                 android:text="Overdue Only" />
 
             <com.google.android.material.chip.Chip
@@ -125,7 +125,7 @@
         android:padding="32dp"
         android:text="No reservations found in queue."
         android:textSize="14sp"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/text_muted"
         android:visibility="gone"
         tools:visibility="visible" />
 
