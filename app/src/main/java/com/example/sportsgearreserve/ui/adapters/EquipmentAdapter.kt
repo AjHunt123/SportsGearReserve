@@ -1,11 +1,10 @@
 package com.example.sportsgearreserve.ui.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportsgearreserve.R
 import com.example.sportsgearreserve.databinding.ItemEquipmentBinding
 import com.example.sportsgearreserve.models.Equipment
 
@@ -18,7 +17,7 @@ class EquipmentAdapter(
     private val onDeleteClick: ((Equipment) -> Unit)? = null
 ) : RecyclerView.Adapter<EquipmentAdapter.EquipmentViewHolder>() {
 
-    inner class EquipmentViewHolder(val binding: ItemEquipmentBinding) :
+    class EquipmentViewHolder(val binding: ItemEquipmentBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EquipmentViewHolder {
@@ -39,15 +38,14 @@ class EquipmentAdapter(
             tvTotalStock.text = "Total Quantity: ${item.totalQuantity} units"
             tvMaxLimits.text = "Max ${item.maxPerStudent}/student | Max ${item.maxDurationHours}h"
 
-            val context = root.context
             if (item.isActive) {
                 tvActiveBadge.text = "ACTIVE"
-                tvActiveBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_active_bg))
-                tvActiveBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_active_text))
+                tvActiveBadge.setBackgroundColor(Color.parseColor("#DCFCE7"))
+                tvActiveBadge.setTextColor(Color.parseColor("#15803D"))
             } else {
                 tvActiveBadge.text = "INACTIVE"
-                tvActiveBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_inactive_bg))
-                tvActiveBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_inactive_text))
+                tvActiveBadge.setBackgroundColor(Color.parseColor("#F1F5F9"))
+                tvActiveBadge.setTextColor(Color.parseColor("#5B6678"))
             }
 
             if (isStaffMode) {

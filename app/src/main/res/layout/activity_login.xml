@@ -21,7 +21,7 @@
             android:layout_marginTop="32dp"
             android:contentDescription="App Logo"
             android:src="@android:drawable/ic_menu_compass"
-            app:tint="@color/primary_blue" />
+            app:tint="@color/primary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,10 +45,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/surface"
+            app:cardElevation="3dp"
+            app:strokeWidth="1dp"
             app:strokeColor="@color/card_stroke"
-            app:strokeWidth="1dp">
+            app:cardBackgroundColor="@color/surface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,9 +60,8 @@
                     android:id="@+id/tabLayoutMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabIndicatorColor="@color/primary_blue"
-                    app:tabSelectedTextColor="@color/primary_blue"
-                    app:tabTextColor="@color/text_secondary"
+                    app:tabIndicatorColor="@color/accent"
+                    app:tabSelectedTextColor="@color/accent"
                     app:tabIndicatorFullWidth="true">
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
@@ -163,7 +162,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Sign In as Student"
                     android:textSize="15sp"
-                    app:backgroundTint="@color/primary_blue"
+                    android:backgroundTint="@color/primary"
                     app:cornerRadius="10dp" />
 
                 <!-- Quick Demo Login Buttons for Testing -->
@@ -191,8 +190,6 @@
                         android:layout_weight="1"
                         android:layout_marginEnd="4dp"
                         android:text="Demo Student"
-                        android:textColor="@color/primary_blue"
-                        app:strokeColor="@color/primary_blue"
                         android:textSize="12sp" />
 
                     <com.google.android.material.button.MaterialButton
@@ -203,8 +200,6 @@
                         android:layout_weight="1"
                         android:layout_marginStart="4dp"
                         android:text="Demo Staff"
-                        android:textColor="@color/primary"
-                        app:strokeColor="@color/primary"
                         android:textSize="12sp" />
 
                 </LinearLayout>

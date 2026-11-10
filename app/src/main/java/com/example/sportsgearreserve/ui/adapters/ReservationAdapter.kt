@@ -1,11 +1,10 @@
 package com.example.sportsgearreserve.ui.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportsgearreserve.R
 import com.example.sportsgearreserve.databinding.ItemReservationBinding
 import com.example.sportsgearreserve.models.Reservation
 import com.example.sportsgearreserve.models.ReservationStatus
@@ -23,7 +22,7 @@ class ReservationAdapter(
 
     private val dateFormat = SimpleDateFormat("MMM dd, h:mm a", Locale.getDefault())
 
-    inner class ReservationViewHolder(val binding: ItemReservationBinding) :
+    class ReservationViewHolder(val binding: ItemReservationBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservationViewHolder {
@@ -47,36 +46,34 @@ class ReservationAdapter(
             val endStr = dateFormat.format(Date(item.endAt))
             tvTimeWindow.text = "Window: $startStr – $endStr"
 
-            val context = root.context
-
-            // Status Badge Formatting & Colors
+            // Status Badge Formatting & Colors (Court Energy Palette)
             if (item.isOverdue) {
                 tvStatusBadge.text = "OVERDUE"
-                tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_overdue_bg))
-                tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_overdue_text))
-                cardReservation.strokeColor = ContextCompat.getColor(context, R.color.badge_overdue_border)
+                tvStatusBadge.setBackgroundColor(Color.parseColor("#FFEBEE"))
+                tvStatusBadge.setTextColor(Color.parseColor("#C62828"))
+                cardReservation.strokeColor = Color.parseColor("#E53935")
             } else {
-                cardReservation.strokeColor = ContextCompat.getColor(context, R.color.card_stroke)
+                cardReservation.strokeColor = Color.parseColor("#E3E7EE")
                 when (item.status) {
                     ReservationStatus.RESERVED -> {
                         tvStatusBadge.text = "RESERVED"
-                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_reserved_bg))
-                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_reserved_text))
+                        tvStatusBadge.setBackgroundColor(Color.parseColor("#E0F2FE"))
+                        tvStatusBadge.setTextColor(Color.parseColor("#0369A1"))
                     }
                     ReservationStatus.ISSUED -> {
                         tvStatusBadge.text = "ISSUED"
-                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_issued_bg))
-                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_issued_text))
+                        tvStatusBadge.setBackgroundColor(Color.parseColor("#FEF3C7"))
+                        tvStatusBadge.setTextColor(Color.parseColor("#B45309"))
                     }
                     ReservationStatus.RETURNED -> {
                         tvStatusBadge.text = "RETURNED"
-                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_active_bg))
-                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_active_text))
+                        tvStatusBadge.setBackgroundColor(Color.parseColor("#DCFCE7"))
+                        tvStatusBadge.setTextColor(Color.parseColor("#15803D"))
                     }
                     ReservationStatus.CANCELLED -> {
                         tvStatusBadge.text = "CANCELLED"
-                        tvStatusBadge.setBackgroundColor(ContextCompat.getColor(context, R.color.badge_inactive_bg))
-                        tvStatusBadge.setTextColor(ContextCompat.getColor(context, R.color.badge_inactive_text))
+                        tvStatusBadge.setBackgroundColor(Color.parseColor("#F1F5F9"))
+                        tvStatusBadge.setTextColor(Color.parseColor("#5B6678"))
                     }
                 }
             }
