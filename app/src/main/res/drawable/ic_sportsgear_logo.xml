@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Save as: res/drawable/ic_sportsgear_logo.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Badge background -->
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M48,48m-44,0a44,44 0,1 1,88 0a44,44 0,1 1,-88 0" />
+
+    <!-- Ball, centered -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M48,48m-28,0a28,28 0,1 1,56 0a28,28 0,1 1,-56 0" />
+
+    <!-- Ball seams -->
+    <path
+        android:strokeColor="@color/primary"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M48,20 L48,76 M20,48 L76,48" />
+    <path
+        android:strokeColor="@color/primary"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M29,28 Q43,48 29,68 M67,28 Q53,48 67,68" />
+
+    <!-- Reservation check badge -->
+    <path
+        android:fillColor="@color/accent"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:pathData="M68,68m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M62.5,68 L66.5,72 L74,64" />
+</vector>
