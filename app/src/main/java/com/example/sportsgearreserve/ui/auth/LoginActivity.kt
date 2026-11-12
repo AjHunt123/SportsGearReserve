@@ -85,22 +85,6 @@ class LoginActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             handleFormSubmit()
         }
-
-        binding.btnDemoStudent.setOnClickListener {
-            val user = SportsRepository.getUsers().find { it.role == UserRole.STUDENT }
-            user?.let {
-                sessionManager.saveUser(it)
-                navigateToHome(it)
-            }
-        }
-
-        binding.btnDemoStaff.setOnClickListener {
-            val user = SportsRepository.getUsers().find { it.role == UserRole.STAFF }
-            user?.let {
-                sessionManager.saveUser(it)
-                navigateToHome(it)
-            }
-        }
     }
 
     private fun handleFormSubmit() {
@@ -143,7 +127,7 @@ class LoginActivity : AppCompatActivity() {
                     sessionManager.saveUser(user)
                     navigateToHome(user)
                 } else {
-                    Toast.makeText(this, "Unauthorized: Staff accounts cannot be self-registered. Use staff@uc.edu.ph or demo staff button.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Unauthorized: Staff accounts cannot be self-registered. Use staff@uc.edu.ph.", Toast.LENGTH_LONG).show()
                 }
             }
         }
