@@ -32,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sessionManager = SessionManager(this)
+        sessionManager.syncRegisteredUsersWithRepository()
 
         // If already logged in, redirect to appropriate main activity
         sessionManager.getUser()?.let { user ->
@@ -58,21 +59,21 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUIForMode() {
         when (currentMode) {
             MODE_STUDENT_SIGNIN -> {
-                binding.tilFullName.visibility = View.GONE
+                binding.layoutNameFields.visibility = View.GONE
                 binding.tilStudentId.visibility = View.GONE
                 binding.tvRoleNote.visibility = View.GONE
                 binding.btnSubmit.text = "Sign In as Student"
                 binding.etEmail.setText("student@uc.edu.ph")
             }
             MODE_STUDENT_REGISTER -> {
-                binding.tilFullName.visibility = View.VISIBLE
+                binding.layoutNameFields.visibility = View.VISIBLE
                 binding.tilStudentId.visibility = View.VISIBLE
                 binding.tvRoleNote.visibility = View.GONE
                 binding.btnSubmit.text = "Register Student Account"
                 binding.etEmail.setText("")
             }
             MODE_STAFF_PORTAL -> {
-                binding.tilFullName.visibility = View.GONE
+                binding.layoutNameFields.visibility = View.GONE
                 binding.tilStudentId.visibility = View.GONE
                 binding.tvRoleNote.visibility = View.VISIBLE
                 binding.btnSubmit.text = "Sign In to Staff Portal"
@@ -107,9 +108,11 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
             MODE_STUDENT_REGISTER -> {
-                val fullName = binding.etFullName.text.toString().trim()
+                val firstName = binding.etFirstName.text.toString().trim()
+                val lastName = binding.etLastName.text.toString().trim()
                 val studentId = binding.etStudentId.text.toString().trim()
-                val result = SportsRepository.registerStudent(fullName, email, studentId)
+
+                val result = SportsRepository.registerStudent(firstName, lastName, email, studentId)
                 result.fold(
                     onSuccess = { newUser ->
                         Toast.makeText(this, "Account created successfully! Logging in...", Toast.LENGTH_SHORT).show()

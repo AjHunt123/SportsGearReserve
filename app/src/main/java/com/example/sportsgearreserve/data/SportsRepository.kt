@@ -21,26 +21,37 @@ object SportsRepository {
         // Users
         val student1 = User(
             userId = "std_1",
-            fullName = "Aljohn Fornolles",
+            firstName = "Aljohn",
+            lastName = "Fornolles",
             email = "student@uc.edu.ph",
             studentId = "17425546",
             role = UserRole.STUDENT
         )
         val student2 = User(
             userId = "std_2",
-            fullName = "Maria Santos",
+            firstName = "Maria",
+            lastName = "Santos",
             email = "maria@uc.edu.ph",
             studentId = "17425001",
             role = UserRole.STUDENT
         )
+        val student3 = User(
+            userId = "std_3",
+            firstName = "Juan",
+            lastName = "Dela Cruz",
+            email = "juan@uc.edu.ph",
+            studentId = "17429999",
+            role = UserRole.STUDENT
+        )
         val staff1 = User(
             userId = "staff_1",
-            fullName = "Sports Office Admin",
+            firstName = "Sports Office",
+            lastName = "Admin",
             email = "staff@uc.edu.ph",
             studentId = null,
             role = UserRole.STAFF
         )
-        users.addAll(listOf(student1, student2, staff1))
+        users.addAll(listOf(student1, student2, student3, staff1))
 
         // Equipment
         val eq1 = Equipment(
@@ -194,16 +205,23 @@ object SportsRepository {
         return users.find { it.email.equals(email, ignoreCase = true) }
     }
 
-    fun registerStudent(fullName: String, email: String, studentId: String): Result<User> {
-        if (fullName.isBlank() || email.isBlank() || studentId.isBlank()) {
-            return Result.failure(IllegalArgumentException("All fields are required for registration."))
+    fun ensureUserExists(user: User) {
+        if (users.none { it.email.equals(user.email, ignoreCase = true) }) {
+            users.add(user)
+        }
+    }
+
+    fun registerStudent(firstName: String, lastName: String, email: String, studentId: String): Result<User> {
+        if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || studentId.isBlank()) {
+            return Result.failure(IllegalArgumentException("All fields (First Name, Last Name, Email, Student ID) are required."))
         }
         if (users.any { it.email.equals(email, ignoreCase = true) }) {
             return Result.failure(IllegalArgumentException("An account with this email already exists."))
         }
         val newUser = User(
             userId = "std_${UUID.randomUUID().toString().take(6)}",
-            fullName = fullName.trim(),
+            firstName = firstName.trim(),
+            lastName = lastName.trim(),
             email = email.trim(),
             studentId = studentId.trim(),
             role = UserRole.STUDENT
