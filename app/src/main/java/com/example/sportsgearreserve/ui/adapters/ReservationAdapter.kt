@@ -17,7 +17,8 @@ class ReservationAdapter(
     private val isStaffMode: Boolean,
     private val onIssueClick: ((Reservation) -> Unit)? = null,
     private val onReturnClick: ((Reservation) -> Unit)? = null,
-    private val onCancelClick: ((Reservation) -> Unit)? = null
+    private val onCancelClick: ((Reservation) -> Unit)? = null,
+    private val onDeleteClick: ((Reservation) -> Unit)? = null
 ) : RecyclerView.Adapter<ReservationAdapter.ReservationViewHolder>() {
 
     private val dateFormat = SimpleDateFormat("MMM dd, h:mm a", Locale.getDefault())
@@ -90,6 +91,7 @@ class ReservationAdapter(
             btnIssue.visibility = View.GONE
             btnReturn.visibility = View.GONE
             btnCancel.visibility = View.GONE
+            btnDelete.visibility = View.GONE
             layoutActions.visibility = View.GONE
 
             if (isStaffMode) {
@@ -104,6 +106,10 @@ class ReservationAdapter(
                     layoutActions.visibility = View.VISIBLE
                     btnReturn.visibility = View.VISIBLE
                     btnReturn.setOnClickListener { onReturnClick?.invoke(item) }
+                } else if (item.status == ReservationStatus.RETURNED || item.status == ReservationStatus.CANCELLED) {
+                    layoutActions.visibility = View.VISIBLE
+                    btnDelete.visibility = View.VISIBLE
+                    btnDelete.setOnClickListener { onDeleteClick?.invoke(item) }
                 }
             } else {
                 // Student mode: Allow student to cancel RESERVED before start time

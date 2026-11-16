@@ -12,6 +12,10 @@ class SessionManager(context: Context) {
     fun saveUser(user: User) {
         prefs.edit().apply {
             putString("USER_ID", user.userId)
+            putString("PREFIX", user.prefix)
+            putString("FIRST_NAME", user.firstName)
+            putString("MIDDLE_NAME", user.middleName)
+            putString("LAST_NAME", user.lastName)
             putString("FULL_NAME", user.fullName)
             putString("EMAIL", user.email)
             putString("STUDENT_ID", user.studentId)
@@ -22,12 +26,24 @@ class SessionManager(context: Context) {
 
     fun getUser(): User? {
         val userId = prefs.getString("USER_ID", null) ?: return null
-        val fullName = prefs.getString("FULL_NAME", "") ?: ""
+        val prefix = prefs.getString("PREFIX", "") ?: ""
+        val firstName = prefs.getString("FIRST_NAME", "") ?: ""
+        val middleName = prefs.getString("MIDDLE_NAME", "") ?: ""
+        val lastName = prefs.getString("LAST_NAME", "") ?: ""
         val email = prefs.getString("EMAIL", "") ?: ""
         val studentId = prefs.getString("STUDENT_ID", null)
         val roleStr = prefs.getString("ROLE", UserRole.STUDENT.name) ?: UserRole.STUDENT.name
         val role = try { UserRole.valueOf(roleStr) } catch (e: Exception) { UserRole.STUDENT }
-        return User(userId = userId, fullName = fullName, email = email, studentId = studentId, role = role)
+        return User(
+            userId = userId,
+            prefix = prefix,
+            firstName = firstName,
+            middleName = middleName,
+            lastName = lastName,
+            email = email,
+            studentId = studentId,
+            role = role
+        )
     }
 
     fun isLoggedIn(): Boolean = prefs.getString("USER_ID", null) != null

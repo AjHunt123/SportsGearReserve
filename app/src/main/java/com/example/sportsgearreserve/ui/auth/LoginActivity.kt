@@ -1,10 +1,13 @@
 package com.example.sportsgearreserve.ui.auth
 
+import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sportsgearreserve.data.FirebaseManager
 import com.example.sportsgearreserve.data.SessionManager
 import com.example.sportsgearreserve.data.SportsRepository
 import com.example.sportsgearreserve.databinding.ActivityLoginBinding
@@ -39,8 +42,15 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        setupPrefixDropdown()
         setupTabListeners()
         setupClickListeners()
+    }
+
+    private fun setupPrefixDropdown() {
+        val prefixes = arrayOf("Mr.", "Ms.", "Mrs.", "Dr.", "Prof.")
+        val adapter = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, prefixes)
+        binding.actvPrefix.setAdapter(adapter)
     }
 
     private fun setupTabListeners() {
@@ -58,22 +68,19 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUIForMode() {
         when (currentMode) {
             MODE_STUDENT_SIGNIN -> {
-                binding.tilFullName.visibility = View.GONE
-                binding.tilStudentId.visibility = View.GONE
+                binding.layoutRegisterFields.visibility = View.GONE
                 binding.tvRoleNote.visibility = View.GONE
                 binding.btnSubmit.text = "Sign In as Student"
                 binding.etEmail.setText("student@uc.edu.ph")
             }
             MODE_STUDENT_REGISTER -> {
-                binding.tilFullName.visibility = View.VISIBLE
-                binding.tilStudentId.visibility = View.VISIBLE
+                binding.layoutRegisterFields.visibility = View.VISIBLE
                 binding.tvRoleNote.visibility = View.GONE
                 binding.btnSubmit.text = "Register Student Account"
                 binding.etEmail.setText("")
             }
             MODE_STAFF_PORTAL -> {
-                binding.tilFullName.visibility = View.GONE
-                binding.tilStudentId.visibility = View.GONE
+                binding.layoutRegisterFields.visibility = View.GONE
                 binding.tvRoleNote.visibility = View.VISIBLE
                 binding.btnSubmit.text = "Sign In to Staff Portal"
                 binding.etEmail.setText("staff@uc.edu.ph")
@@ -89,16 +96,20 @@ class LoginActivity : AppCompatActivity() {
         binding.btnDemoStudent.setOnClickListener {
             val user = SportsRepository.getUsers().find { it.role == UserRole.STUDENT }
             user?.let {
-                sessionManager.saveUser(it)
-                navigateToHome(it)
+                FirebaseManager.signIn("student@uc.edu.ph", "123456") { _ ->
+                    sessionManager.saveUser(it)
+                    navigateToHome(it)
+                }
             }
         }
 
         binding.btnDemoStaff.setOnClickListener {
             val user = SportsRepository.getUsers().find { it.role == UserRole.STAFF }
             user?.let {
-                sessionManager.saveUser(it)
-                navigateToHome(it)
+                FirebaseManager.signIn("staff@uc.edu.ph", "123456") { _ ->
+                    sessionManager.saveUser(it)
+                    navigateToHome(it)
+                }
             }
         }
     }
@@ -116,21 +127,29 @@ class LoginActivity : AppCompatActivity() {
             MODE_STUDENT_SIGNIN -> {
                 val user = SportsRepository.getUserByEmail(email)
                 if (user != null && user.role == UserRole.STUDENT) {
-                    sessionManager.saveUser(user)
-                    navigateToHome(user)
+                    FirebaseManager.signIn(email, password) { _ ->
+                        sessionManager.saveUser(user)
+                        navigateToHome(user)
+                    }
                 } else {
                     Toast.makeText(this, "Student account not found with email: $email", Toast.LENGTH_LONG).show()
                 }
             }
             MODE_STUDENT_REGISTER -> {
-                val fullName = binding.etFullName.text.toString().trim()
+                val prefix = binding.actvPrefix.text.toString().trim()
+                val firstName = binding.etFirstName.text.toString().trim()
+                val middleName = binding.etMiddleName.text.toString().trim()
+                val lastName = binding.etLastName.text.toString().trim()
                 val studentId = binding.etStudentId.text.toString().trim()
-                val result = SportsRepository.registerStudent(fullName, email, studentId)
+
+                val result = SportsRepository.registerStudent(prefix, firstName, middleName, lastName, email, studentId)
                 result.fold(
                     onSuccess = { newUser ->
-                        Toast.makeText(this, "Account created successfully! Logging in...", Toast.LENGTH_SHORT).show()
-                        sessionManager.saveUser(newUser)
-                        navigateToHome(newUser)
+                        FirebaseManager.signUp(email, password) { _ ->
+                            Toast.makeText(this, "Account created & authenticated via Firebase!", Toast.LENGTH_SHORT).show()
+                            sessionManager.saveUser(newUser)
+                            navigateToHome(newUser)
+                        }
                     },
                     onFailure = { err ->
                         Toast.makeText(this, err.message ?: "Registration failed.", Toast.LENGTH_LONG).show()
@@ -140,8 +159,10 @@ class LoginActivity : AppCompatActivity() {
             MODE_STAFF_PORTAL -> {
                 val user = SportsRepository.getUserByEmail(email)
                 if (user != null && user.role == UserRole.STAFF) {
-                    sessionManager.saveUser(user)
-                    navigateToHome(user)
+                    FirebaseManager.signIn(email, password) { _ ->
+                        sessionManager.saveUser(user)
+                        navigateToHome(user)
+                    }
                 } else {
                     Toast.makeText(this, "Unauthorized: Staff accounts cannot be self-registered. Use staff@uc.edu.ph or demo staff button.", Toast.LENGTH_LONG).show()
                 }

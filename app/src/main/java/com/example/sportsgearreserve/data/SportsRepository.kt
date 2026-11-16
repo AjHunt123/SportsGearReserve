@@ -15,27 +15,37 @@ object SportsRepository {
 
     init {
         seedMockData()
+        syncWithFirebase()
     }
 
     private fun seedMockData() {
         // Users
         val student1 = User(
             userId = "std_1",
-            fullName = "Aljohn Fornolles",
+            prefix = "Mr.",
+            firstName = "Aljohn",
+            middleName = "",
+            lastName = "Fornolles",
             email = "student@uc.edu.ph",
             studentId = "17425546",
             role = UserRole.STUDENT
         )
         val student2 = User(
             userId = "std_2",
-            fullName = "Maria Santos",
+            prefix = "Ms.",
+            firstName = "Maria",
+            middleName = "Clara",
+            lastName = "Santos",
             email = "maria@uc.edu.ph",
             studentId = "17425001",
             role = UserRole.STUDENT
         )
         val staff1 = User(
             userId = "staff_1",
-            fullName = "Sports Office Admin",
+            prefix = "Mr.",
+            firstName = "Sports Office",
+            middleName = "",
+            lastName = "Admin",
             email = "staff@uc.edu.ph",
             studentId = null,
             role = UserRole.STAFF
@@ -123,7 +133,7 @@ object SportsRepository {
             createdAt = now - hourMs
         )
 
-        // 2. Active ISSUED reservation for Student 1 (currently borrowed, not overdue)
+        // 2. Active ISSUED reservation for Student 1
         val res2 = Reservation(
             reservationId = "res_2",
             userId = student1.userId,
@@ -138,7 +148,7 @@ object SportsRepository {
             issuedAt = now - hourMs
         )
 
-        // 3. OVERDUE ISSUED reservation for Student 2 (endAt passed 2 hours ago)
+        // 3. OVERDUE ISSUED reservation for Student 2
         val res3 = Reservation(
             reservationId = "res_3",
             userId = student2.userId,
@@ -187,6 +197,59 @@ object SportsRepository {
         reservations.addAll(listOf(res1, res2, res3, res4, res5))
     }
 
+    private fun syncWithFirebase() {
+        // Upload initial users, equipment, and reservations to Firebase Firestore
+        users.forEach { user ->
+            FirebaseManager.saveUserToFirebase(user)
+        }
+        equipmentList.forEach { eq ->
+            FirebaseManager.saveEquipmentToFirebase(eq)
+        }
+        reservations.forEach { res ->
+            FirebaseManager.saveReservationToFirebase(res)
+        }
+
+        // Attach Real-Time Listeners for Firebase Firestore READ
+        FirebaseManager.listenToUsers { remoteUsers ->
+            if (remoteUsers.isNotEmpty()) {
+                remoteUsers.forEach { remoteUser ->
+                    val idx = users.indexOfFirst { it.userId == remoteUser.userId }
+                    if (idx != -1) {
+                        users[idx] = remoteUser
+                    } else {
+                        users.add(remoteUser)
+                    }
+                }
+            }
+        }
+
+        FirebaseManager.listenToEquipment { remoteList ->
+            if (remoteList.isNotEmpty()) {
+                remoteList.forEach { remoteEq ->
+                    val idx = equipmentList.indexOfFirst { it.equipmentId == remoteEq.equipmentId }
+                    if (idx != -1) {
+                        equipmentList[idx] = remoteEq
+                    } else {
+                        equipmentList.add(remoteEq)
+                    }
+                }
+            }
+        }
+
+        FirebaseManager.listenToReservations { remoteReservations ->
+            if (remoteReservations.isNotEmpty()) {
+                remoteReservations.forEach { remoteRes ->
+                    val idx = reservations.indexOfFirst { it.reservationId == remoteRes.reservationId }
+                    if (idx != -1) {
+                        reservations[idx] = remoteRes
+                    } else {
+                        reservations.add(0, remoteRes)
+                    }
+                }
+            }
+        }
+    }
+
     // --- Users ---
     fun getUsers(): List<User> = users.toList()
 
@@ -194,21 +257,35 @@ object SportsRepository {
         return users.find { it.email.equals(email, ignoreCase = true) }
     }
 
-    fun registerStudent(fullName: String, email: String, studentId: String): Result<User> {
-        if (fullName.isBlank() || email.isBlank() || studentId.isBlank()) {
-            return Result.failure(IllegalArgumentException("All fields are required for registration."))
+    fun registerStudent(
+        prefix: String,
+        firstName: String,
+        middleName: String,
+        lastName: String,
+        email: String,
+        studentId: String
+    ): Result<User> {
+        if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || studentId.isBlank()) {
+            return Result.failure(IllegalArgumentException("First name, last name, email, and student ID are required."))
         }
         if (users.any { it.email.equals(email, ignoreCase = true) }) {
             return Result.failure(IllegalArgumentException("An account with this email already exists."))
         }
         val newUser = User(
             userId = "std_${UUID.randomUUID().toString().take(6)}",
-            fullName = fullName.trim(),
+            prefix = prefix.trim(),
+            firstName = firstName.trim(),
+            middleName = middleName.trim(),
+            lastName = lastName.trim(),
             email = email.trim(),
             studentId = studentId.trim(),
             role = UserRole.STUDENT
         )
         users.add(newUser)
+
+        // Firebase Firestore CREATE: Persist new user profile to "users" collection
+        FirebaseManager.saveUserToFirebase(newUser)
+
         return Result.success(newUser)
     }
 
@@ -226,9 +303,6 @@ object SportsRepository {
         return listOf("All") + categories
     }
 
-    // --- Core Overlapping Availability Engine ---
-    // BR-01 & BR-02: Availability = totalQuantity - sum(overlapping RESERVED or ISSUED quantities)
-    // Overlap: newStartAt < existingEndAt AND newEndAt > existingStartAt
     fun calculateAvailableQuantity(equipmentId: String, startAt: Long, endAt: Long, excludeReservationId: String? = null): Int {
         val eq = getEquipmentById(equipmentId) ?: return 0
         if (!eq.isActive) return 0
@@ -269,7 +343,7 @@ object SportsRepository {
             return Result.failure(IllegalStateException("Equipment is deactivated and unavailable for reservation."))
         }
 
-        val now = System.currentTimeMillis() - 60_000 // 1 minute leeway for clock precision
+        val now = System.currentTimeMillis() - 60_000
         if (startAt < now) {
             return Result.failure(IllegalArgumentException("Reservation start time must be in the future."))
         }
@@ -291,7 +365,6 @@ object SportsRepository {
             return Result.failure(IllegalArgumentException("Requested quantity exceeds maximum limit per student (${eq.maxPerStudent} units)."))
         }
 
-        // Revalidate availability (BR-01, BR-02, FR-05)
         val availableStock = calculateAvailableQuantity(equipmentId, startAt, endAt)
         if (quantity > availableStock) {
             return Result.failure(IllegalStateException("Insufficient stock available for the requested time window. Available units: $availableStock."))
@@ -311,6 +384,7 @@ object SportsRepository {
         )
 
         reservations.add(0, newReservation)
+        FirebaseManager.saveReservationToFirebase(newReservation)
         return Result.success(newReservation)
     }
 
@@ -331,10 +405,12 @@ object SportsRepository {
             return Result.failure(IllegalStateException("Cannot cancel a reservation that has already reached or passed its start time."))
         }
 
-        reservations[index] = res.copy(
+        val updated = res.copy(
             status = ReservationStatus.CANCELLED,
             cancelReason = "Cancelled by student before start time"
         )
+        reservations[index] = updated
+        FirebaseManager.saveReservationToFirebase(updated)
         return Result.success(Unit)
     }
 
@@ -347,10 +423,12 @@ object SportsRepository {
             return Result.failure(IllegalStateException("Only RESERVED bookings can be marked as ISSUED."))
         }
 
-        reservations[index] = res.copy(
+        val updated = res.copy(
             status = ReservationStatus.ISSUED,
             issuedAt = System.currentTimeMillis()
         )
+        reservations[index] = updated
+        FirebaseManager.saveReservationToFirebase(updated)
         return Result.success(Unit)
     }
 
@@ -363,10 +441,12 @@ object SportsRepository {
             return Result.failure(IllegalStateException("Only ISSUED equipment can be marked as RETURNED."))
         }
 
-        reservations[index] = res.copy(
+        val updated = res.copy(
             status = ReservationStatus.RETURNED,
             returnedAt = System.currentTimeMillis()
         )
+        reservations[index] = updated
+        FirebaseManager.saveReservationToFirebase(updated)
         return Result.success(Unit)
     }
 
@@ -382,10 +462,26 @@ object SportsRepository {
             return Result.failure(IllegalStateException("Only RESERVED bookings can be cancelled."))
         }
 
-        reservations[index] = res.copy(
+        val updated = res.copy(
             status = ReservationStatus.CANCELLED,
             cancelReason = reason.trim()
         )
+        reservations[index] = updated
+        FirebaseManager.saveReservationToFirebase(updated)
+        return Result.success(Unit)
+    }
+
+    fun deleteReservation(reservationId: String): Result<Unit> {
+        val index = reservations.indexOfFirst { it.reservationId == reservationId }
+        if (index == -1) return Result.failure(IllegalArgumentException("Reservation not found."))
+
+        val res = reservations[index]
+        if (res.status != ReservationStatus.RETURNED && res.status != ReservationStatus.CANCELLED) {
+            return Result.failure(IllegalStateException("Only CANCELLED or RETURNED activity records can be deleted."))
+        }
+
+        reservations.removeAt(index)
+        FirebaseManager.deleteReservationFromFirebase(reservationId)
         return Result.success(Unit)
     }
 
@@ -406,9 +502,8 @@ object SportsRepository {
             return Result.failure(IllegalArgumentException("Quantities and duration limits must be greater than zero."))
         }
 
-        if (equipmentId.isNullOrBlank()) {
-            // New Equipment
-            val newEq = Equipment(
+        val updatedEq = if (equipmentId.isNullOrBlank()) {
+            Equipment(
                 equipmentId = "eq_${UUID.randomUUID().toString().take(6)}",
                 name = name.trim(),
                 category = category.trim(),
@@ -417,26 +512,22 @@ object SportsRepository {
                 maxPerStudent = maxPerStudent,
                 maxDurationHours = maxDurationHours,
                 isActive = true
-            )
-            equipmentList.add(newEq)
-            return Result.success(newEq)
+            ).also { equipmentList.add(it) }
         } else {
-            // Edit Equipment
             val index = equipmentList.indexOfFirst { it.equipmentId == equipmentId }
             if (index == -1) return Result.failure(IllegalArgumentException("Equipment not found."))
-
-            val existing = equipmentList[index]
-            val updated = existing.copy(
+            equipmentList[index].copy(
                 name = name.trim(),
                 category = category.trim(),
                 description = description.trim(),
                 totalQuantity = totalQuantity,
                 maxPerStudent = maxPerStudent,
                 maxDurationHours = maxDurationHours
-            )
-            equipmentList[index] = updated
-            return Result.success(updated)
+            ).also { equipmentList[index] = it }
         }
+
+        FirebaseManager.saveEquipmentToFirebase(updatedEq)
+        return Result.success(updatedEq)
     }
 
     fun toggleEquipmentActive(equipmentId: String): Result<Equipment> {
@@ -446,11 +537,12 @@ object SportsRepository {
         val eq = equipmentList[index]
         val updated = eq.copy(isActive = !eq.isActive)
         equipmentList[index] = updated
+
+        FirebaseManager.saveEquipmentToFirebase(updated)
         return Result.success(updated)
     }
 
     fun deleteEquipment(equipmentId: String): Result<Unit> {
-        // BR-06 / FR-08: Can delete ONLY if no reservation refers to it!
         val isReferenced = reservations.any { it.equipmentId == equipmentId }
         if (isReferenced) {
             return Result.failure(IllegalStateException("Cannot delete equipment because existing reservation records refer to it. Deactivate the equipment instead."))

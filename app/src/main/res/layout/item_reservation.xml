@@ -167,6 +167,19 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDelete"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:paddingHorizontal="8dp"
+                android:textColor="@color/badge_overdue_text"
+                android:text="Delete"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -52,7 +52,8 @@ class StaffDashboardFragment : Fragment() {
             isStaffMode = true,
             onIssueClick = { reservation -> handleIssue(reservation) },
             onReturnClick = { reservation -> handleReturn(reservation) },
-            onCancelClick = { reservation -> handleCancelWithReason(reservation) }
+            onCancelClick = { reservation -> handleCancelWithReason(reservation) },
+            onDeleteClick = { reservation -> handleDelete(reservation) }
         )
         binding.rvStaffQueue.layoutManager = LinearLayoutManager(requireContext())
         binding.rvStaffQueue.adapter = adapter
@@ -68,7 +69,7 @@ class StaffDashboardFragment : Fragment() {
     private fun loadData() {
         allReservations = SportsRepository.getAllReservations()
 
-        // Check for overdue items (BR-05, FR-11)
+        // Check for overdue items
         val overdueCount = allReservations.count { it.isOverdue }
         if (overdueCount > 0) {
             binding.cardOverdueAlert.visibility = View.VISIBLE
@@ -164,6 +165,26 @@ class StaffDashboardFragment : Fragment() {
                 )
             }
             .setNegativeButton("Back", null)
+            .show()
+    }
+
+    private fun handleDelete(reservation: Reservation) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete Activity Record?")
+            .setMessage("Are you sure you want to permanently delete this ${reservation.status.name} record for ${reservation.equipmentName} (${reservation.studentName})?")
+            .setPositiveButton("Delete Permanently") { _, _ ->
+                val result = SportsRepository.deleteReservation(reservation.reservationId)
+                result.fold(
+                    onSuccess = {
+                        Toast.makeText(requireContext(), "Activity record deleted from system & Firebase.", Toast.LENGTH_SHORT).show()
+                        loadData()
+                    },
+                    onFailure = { error ->
+                        Toast.makeText(requireContext(), error.message ?: "Failed to delete record.", Toast.LENGTH_LONG).show()
+                    }
+                )
+            }
+            .setNegativeButton("Cancel", null)
             .show()
     }
 
