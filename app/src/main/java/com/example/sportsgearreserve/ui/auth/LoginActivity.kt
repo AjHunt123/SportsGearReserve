@@ -92,26 +92,6 @@ class LoginActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             handleFormSubmit()
         }
-
-        binding.btnDemoStudent.setOnClickListener {
-            val user = SportsRepository.getUsers().find { it.role == UserRole.STUDENT }
-            user?.let {
-                FirebaseManager.signIn("student@uc.edu.ph", "123456") { _ ->
-                    sessionManager.saveUser(it)
-                    navigateToHome(it)
-                }
-            }
-        }
-
-        binding.btnDemoStaff.setOnClickListener {
-            val user = SportsRepository.getUsers().find { it.role == UserRole.STAFF }
-            user?.let {
-                FirebaseManager.signIn("staff@uc.edu.ph", "123456") { _ ->
-                    sessionManager.saveUser(it)
-                    navigateToHome(it)
-                }
-            }
-        }
     }
 
     private fun handleFormSubmit() {
