@@ -128,4 +128,15 @@ class SportsRepositoryTest {
         val deleteResult = SportsRepository.deleteEquipment("eq_1")
         assertTrue("Deleting equipment referenced by reservations must fail", deleteResult.isFailure)
     }
+
+    @Test
+    fun testRegisterStudentWithFirstAndLastName() {
+        val result = SportsRepository.registerStudent("Juan", "Dela Cruz", "new_test_student@uc.edu.ph", "17429999")
+        assertTrue("Registration with first and last name should succeed", result.isSuccess)
+        val user = result.getOrNull()
+        assertNotNull(user)
+        assertEquals("Juan", user?.firstName)
+        assertEquals("Dela Cruz", user?.lastName)
+        assertEquals("Juan Dela Cruz", user?.fullName)
+    }
 }

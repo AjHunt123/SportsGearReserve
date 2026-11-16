@@ -5,48 +5,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_background"
     android:fillViewport="true"
-    android:background="@color/app_background">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="24dp">
 
+        <!-- New logo (no tint, it has its own colors) -->
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:layout_marginTop="32dp"
-            android:contentDescription="App Logo"
-            android:src="@android:drawable/ic_menu_compass"
-            app:tint="@color/primary_blue" />
+            android:contentDescription="SportsGear Reserve logo"
+            android:src="@drawable/ic_sportsgear_logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="SportsGear Reserve"
+            android:textColor="@color/text_primary"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:gravity="center"
             android:text="Equipment Reservation &amp; Availability Control"
-            android:textSize="13sp"
-            android:textColor="@color/text_secondary" />
+            android:textAlignment="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="16dp"
             app:cardElevation="3dp"
-            app:cardBackgroundColor="@color/surface"
             app:strokeColor="@color/card_stroke"
             app:strokeWidth="1dp">
 
@@ -80,115 +83,41 @@
                         android:text="Staff Portal" />
                 </com.google.android.material.tabs.TabLayout>
 
-                <!-- Registration Specific Fields Container -->
-                <LinearLayout
-                    android:id="@+id/layoutRegisterFields"
+                <!-- Full Name (Register only) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFullName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:hint="Full Name"
                     android:visibility="gone"
                     tools:visibility="visible">
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFullName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal">
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Prefix Dropdown -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tilPrefix"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                            android:layout_width="110dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:hint="Prefix">
+                <!-- Student ID (Register only) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilStudentId"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Student ID Number"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
-                            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                                android:id="@+id/actvPrefix"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="none"
-                                android:text="Mr." />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- First Name -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tilFirstName"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="First Name">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etFirstName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPersonName|textCapWords" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etStudentId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal">
-
-                        <!-- Middle Name (Optional) -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tilMiddleName"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="4dp"
-                            android:hint="Middle Name (Opt)">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etMiddleName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPersonName|textCapWords" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!-- Last Name -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/tilLastName"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="4dp"
-                            android:hint="Last Name">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etLastName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPersonName|textCapWords" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <!-- Student ID -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilStudentId"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="Student ID Number">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etStudentId"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Email -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -230,9 +159,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
                     android:text="Note: Staff accounts must be pre-authorized by sports office administration."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
                     android:visibility="gone"
                     tools:visibility="visible" />
 
@@ -241,9 +170,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/primary"
                     android:text="Sign In as Student"
                     android:textSize="15sp"
-                    app:backgroundTint="@color/primary_blue"
                     app:cornerRadius="10dp" />
 
                 <!-- Quick Demo Login Buttons for Testing -->
@@ -253,26 +182,24 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
                     android:text="Quick Demo Login:"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnDemoStudent"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:layout_weight="1"
                         android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
                         android:text="Demo Student"
-                        android:textColor="@color/primary_blue"
-                        app:strokeColor="@color/primary_blue"
                         android:textSize="12sp" />
 
                     <com.google.android.material.button.MaterialButton
@@ -280,19 +207,14 @@
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        android:layout_weight="1"
                         android:layout_marginStart="4dp"
+                        android:layout_weight="1"
                         android:text="Demo Staff"
-                        android:textColor="@color/primary"
-                        app:strokeColor="@color/primary"
                         android:textSize="12sp" />
-
                 </LinearLayout>
 
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
-
 </ScrollView>
