@@ -131,12 +131,13 @@ class SportsRepositoryTest {
 
     @Test
     fun testRegisterStudentWithFirstAndLastName() {
-        val result = SportsRepository.registerStudent("Juan", "Dela Cruz", "new_test_student@uc.edu.ph", "17429999")
+        val result = SportsRepository.registerStudent("Mr.", "Juan", "D.", "Dela Cruz", "new_test_student@uc.edu.ph", "17429999")
         assertTrue("Registration with first and last name should succeed", result.isSuccess)
         val user = result.getOrNull()
         assertNotNull(user)
+        assertEquals("Mr.", user?.prefix)
         assertEquals("Juan", user?.firstName)
         assertEquals("Dela Cruz", user?.lastName)
-        assertEquals("Juan Dela Cruz", user?.fullName)
+        assertEquals("Mr. Juan D. Dela Cruz", user?.fullName)
     }
 }

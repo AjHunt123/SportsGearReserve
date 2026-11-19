@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "18617897465",
+    "project_id": "sportsgearreserve-app",
+    "storage_bucket": "sportsgearreserve-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18617897465:android:7bdae0d7e49717001a2d28",
+        "android_client_info": {
+          "package_name": "com.example.sportsgearreserve"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzzxWDcR_wb2jrunTVx6KAD0rJbHVq2-I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
